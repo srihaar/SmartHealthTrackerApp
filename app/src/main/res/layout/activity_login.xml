@@ -6,4 +6,53 @@
     android:layout_height="match_parent"
     tools:context="com.project.smarthealthtracker.LoginActivity">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:background="@drawable/log"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="70dp"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:context="com.project.smarthealthtracker.LoginActivity">
+
+    <EditText
+        android:hint="Email"
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
+        android:inputType="textEmailAddress"
+        android:layout_height="wrap_content" />
+
+
+    <EditText
+        android:hint="Password"
+        android:id="@+id/passwordL"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
+        android:inputType="textPassword"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/bLogin"
+        android:text="Login"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvRegisterLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="New User? SIGN UP"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
+

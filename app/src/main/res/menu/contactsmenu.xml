@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="Add"
+        android:id="@+id/addContactButton"
+        android:icon="@drawable/plusicon"
+        app:showAsAction="always"
+         />
+
+    <item android:id="@+id/dashboard_page"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_item_dashboard"
+        />
+    <item android:id="@+id/profile_page"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_item_profile"
+        />
+    <item android:id="@+id/contacts_page"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_item_contacts"
+        />
+    <item android:id="@+id/log_page"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_item_log"
+        />
+    <item android:id="@+id/heartdisease_page"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_item_heartdisease"
+        />
+    <item android:id="@+id/logoutMenu"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_item_logout"
+        />
+
+</menu>
+

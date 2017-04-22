@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Smart Health Tracker</string>
+
+    <!-- menu items -->
+    <string name="menu_item_contacts">Emergency Contacts</string>
+    <string name="menu_item_profile">View Profile</string>
+    <string name="menu_item_logout">Logout</string>
+    <string name="menu_item_dashboard">Dashboard</string>
+    <string name="menu_item_heartdisease">Heart Disease Predictor</string>
+    <string name="menu_item_log">Log Data</string>
+
 </resources>
