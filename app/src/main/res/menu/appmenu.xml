@@ -12,13 +12,25 @@
         android:icon="@android:drawable/ic_menu_manage"
         android:title="@string/menu_item_contacts"
         />
+    <item android:id="@+id/goals_page"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_item_goals"
+        />
     <item android:id="@+id/log_page"
         android:icon="@android:drawable/ic_menu_manage"
         android:title="@string/menu_item_log"
         />
-    <item android:id="@+id/heartdisease_page"
+    <item android:id="@+id/calories_page"
         android:icon="@android:drawable/ic_menu_manage"
-        android:title="@string/menu_item_heartdisease"
+        android:title="@string/menu_item_calories"
+        />
+    <item android:id="@+id/steps_page"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_item_steps"
+        />
+    <item android:id="@+id/weight_page"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_item_weight"
         />
     <item android:id="@+id/logoutMenu"
         android:icon="@android:drawable/ic_menu_manage"

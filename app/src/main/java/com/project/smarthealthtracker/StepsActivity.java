@@ -7,13 +7,52 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class LogActivity extends AppCompatActivity {
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+
+public class StepsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log);
-        getSupportActionBar().setTitle("Log Food and Weight");
+        setContentView(R.layout.activity_steps);
+        getSupportActionBar().setTitle("Steps");
+
+        LineChart lineChart = (LineChart) findViewById(R.id.chart1);
+
+
+        ArrayList<Entry> entries = new ArrayList<>();
+        entries.add(new Entry(4000f, 0));
+        entries.add(new Entry(8000f, 1));
+        entries.add(new Entry(6000f, 2));
+        entries.add(new Entry(9000f, 3));
+        entries.add(new Entry(3000f, 4));
+        entries.add(new Entry(10000f, 5));
+        entries.add(new Entry(6000f, 6));
+
+        LineDataSet dataset = new LineDataSet(entries, "Weekly Step Count");
+
+        ArrayList<String> labels = new ArrayList<String>();
+        labels.add("Mon");
+        labels.add("Tue");
+        labels.add("Wed");
+        labels.add("Thu");
+        labels.add("Fri");
+        labels.add("Sat");
+        labels.add("Sun");
+
+        LineData data = new LineData(labels, dataset);
+        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+        lineChart.setDescription("Steps for the week");
+
+        lineChart.setData(data);
+        lineChart.animateX(3000);
+        lineChart.animateY(3000);
     }
 
     @Override
@@ -27,8 +66,8 @@ public class LogActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.dashboard_page:
-                Intent logActivity = new Intent(getApplicationContext(),DashboardActivity.class);
-                startActivity(logActivity);
+                Intent stepsActivity = new Intent(getApplicationContext(),DashboardActivity.class);
+                startActivity(stepsActivity);
                 finish();
                 return true;
             case R.id.calories_page:
@@ -37,11 +76,11 @@ public class LogActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.steps_page:
-                Intent stepsActivity = new Intent(getApplicationContext(),StepsActivity.class);
-                startActivity(stepsActivity);
-                finish();
                 return true;
             case R.id.log_page:
+                Intent logActivity = new Intent(getApplicationContext(),LogActivity.class);
+                startActivity(logActivity);
+                finish();
                 return true;
             case R.id.contacts_page:
                 Intent contactsActivity = new Intent(getApplicationContext(),ContactsActivity.class);

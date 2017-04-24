@@ -6,7 +6,10 @@
     <string name="menu_item_profile">View Profile</string>
     <string name="menu_item_logout">Logout</string>
     <string name="menu_item_dashboard">Dashboard</string>
-    <string name="menu_item_heartdisease">Heart Disease Predictor</string>
+    <string name="menu_item_calories">Calories Burnt</string>
+    <string name="menu_item_steps">Steps</string>
+    <string name="menu_item_weight">Weight</string>
+    <string name="menu_item_goals">Goals</string>
     <string name="menu_item_log">Log Data</string>
 
 </resources>

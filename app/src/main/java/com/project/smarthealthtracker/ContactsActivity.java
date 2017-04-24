@@ -59,24 +59,47 @@ public class ContactsActivity extends AppCompatActivity implements AdapterView.O
                 dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(dashboard);
                 return true;
-            case R.id.heartdisease_page:
-                Intent i = new Intent(getApplicationContext(),HeartDiseaseActivity.class);
+            case R.id.calories_page:
+                Intent i = new Intent(getApplicationContext(),CaloriesActivity.class);
                 startActivity(i);
+                finish();
+                return true;
+            case R.id.steps_page:
+                Intent stepsActivity = new Intent(getApplicationContext(),StepsActivity.class);
+                startActivity(stepsActivity);
+                finish();
                 return true;
             case R.id.log_page:
                 Intent logActivity = new Intent(getApplicationContext(),LogActivity.class);
                 startActivity(logActivity);
+                finish();
                 return true;
             case R.id.contacts_page:
                 Intent contactsActivity = new Intent(getApplicationContext(),ContactsActivity.class);
                 startActivity(contactsActivity);
+                finish();
                 return true;
             case R.id.profile_page:
                 Intent profileActivity = new Intent(getApplicationContext(),ProfileActivity.class);
                 startActivity(profileActivity);
+                finish();
+                return true;
+            case R.id.goals_page:
+                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
+                startActivity(goalsActivity);
+                finish();
+                return true;
+            case R.id.weight_page:
+                Intent weightActivity = new Intent(getApplicationContext(),WeightActivity.class);
+                startActivity(weightActivity);
+                finish();
                 return true;
             case R.id.logoutMenu:
+                Intent loginActivity = new Intent(getApplicationContext(),MainActivity.class);
+                loginActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(loginActivity);
                 return true;
+
             case R.id.addContactButton:
                 Intent addActivity = new Intent(getApplicationContext(),AddContactActivity.class);
                 addActivity.putExtra("add","true");

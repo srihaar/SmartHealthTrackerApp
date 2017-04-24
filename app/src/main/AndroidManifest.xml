@@ -23,7 +23,11 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".AddContactActivity" />
         <activity android:name=".HeartDiseaseActivity" />
-        <activity android:name=".LogActivity"></activity>
+        <activity android:name=".LogActivity" />
+        <activity android:name=".CaloriesActivity" />
+        <activity android:name=".StepsActivity" />
+        <activity android:name=".GoalsActivity" />
+        <activity android:name=".WeightActivity"></activity>
     </application>
 
 </manifest>

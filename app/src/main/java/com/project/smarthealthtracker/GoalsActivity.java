@@ -7,13 +7,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class LogActivity extends AppCompatActivity {
+public class GoalsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log);
-        getSupportActionBar().setTitle("Log Food and Weight");
+        setContentView(R.layout.activity_goals);
     }
 
     @Override
@@ -27,9 +26,8 @@ public class LogActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.dashboard_page:
-                Intent logActivity = new Intent(getApplicationContext(),DashboardActivity.class);
-                startActivity(logActivity);
-                finish();
+                Intent goalsActivity = new Intent(getApplicationContext(),DashboardActivity.class);
+                startActivity(goalsActivity);
                 return true;
             case R.id.calories_page:
                 Intent i = new Intent(getApplicationContext(),CaloriesActivity.class);
@@ -42,6 +40,9 @@ public class LogActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.log_page:
+                Intent logActivity = new Intent(getApplicationContext(),LogActivity.class);
+                startActivity(logActivity);
+                finish();
                 return true;
             case R.id.contacts_page:
                 Intent contactsActivity = new Intent(getApplicationContext(),ContactsActivity.class);
@@ -54,9 +55,6 @@ public class LogActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.goals_page:
-                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
-                startActivity(goalsActivity);
-                finish();
                 return true;
             case R.id.weight_page:
                 Intent weightActivity = new Intent(getApplicationContext(),WeightActivity.class);
