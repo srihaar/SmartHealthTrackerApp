@@ -1,5 +1,6 @@
 package com.project.smarthealthtracker;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,43 +9,68 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class StepsActivity extends AppCompatActivity {
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
         getSupportActionBar().setTitle("Steps");
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Fetching Weekly Steps");
+        progressDialog.show();
 
+
+        NodeRestClient.get("/getStepsByWeekMobile",null,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject obj) {
+                try{
+                    JSONArray array = obj.getJSONArray("activities-steps");
+                    loadChart(array);
+                }catch(Exception e){
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e , JSONArray a) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+
+            }
+        });
+    }
+
+    public void loadChart(JSONArray array)throws JSONException{
+        progressDialog.hide();
+        progressDialog.dismiss();
         LineChart lineChart = (LineChart) findViewById(R.id.chart1);
 
-
         ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(4000f, 0));
-        entries.add(new Entry(8000f, 1));
-        entries.add(new Entry(6000f, 2));
-        entries.add(new Entry(9000f, 3));
-        entries.add(new Entry(3000f, 4));
-        entries.add(new Entry(10000f, 5));
-        entries.add(new Entry(6000f, 6));
+
+        for(int i=0;i<array.length();i++){
+            entries.add(new Entry(array.getJSONObject(i).getInt("value"),i));
+        }
 
         LineDataSet dataset = new LineDataSet(entries, "Weekly Step Count");
 
         ArrayList<String> labels = new ArrayList<String>();
-        labels.add("Mon");
-        labels.add("Tue");
-        labels.add("Wed");
-        labels.add("Thu");
-        labels.add("Fri");
-        labels.add("Sat");
-        labels.add("Sun");
+        for(int i=0;i<array.length();i++){
+            labels.add(array.getJSONObject(i).getString("dateTime"));
+        }
 
         LineData data = new LineData(labels, dataset);
         dataset.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -53,6 +79,8 @@ public class StepsActivity extends AppCompatActivity {
         lineChart.setData(data);
         lineChart.animateX(3000);
         lineChart.animateY(3000);
+        lineChart.getXAxis().setLabelsToSkip(0);
+
     }
 
     @Override

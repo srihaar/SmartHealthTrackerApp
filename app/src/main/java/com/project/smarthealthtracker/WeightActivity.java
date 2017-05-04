@@ -1,5 +1,6 @@
 package com.project.smarthealthtracker;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,10 +13,16 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class WeightActivity extends AppCompatActivity {
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,37 +30,59 @@ public class WeightActivity extends AppCompatActivity {
         setContentView(R.layout.activity_weight);
 
         getSupportActionBar().setTitle("Weight Change");
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Fetching Weight Data");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
+        NodeRestClient.get("/getWeightByWeekMobile",null,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject obj) {
+                try{
+                    JSONArray array = obj.getJSONArray("weight");
+                    loadChart(array);
+                }catch(Exception e){
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e , JSONArray a) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+
+            }
+        });
+
+
+
+    }
+
+    public void loadChart(JSONArray array) throws JSONException{
+        progressDialog.hide();
+        progressDialog.dismiss();
         LineChart lineChart = (LineChart) findViewById(R.id.chart1);
 
 
         ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(150f, 0));
-        entries.add(new Entry(151f, 1));
-        entries.add(new Entry(150f, 2));
-        entries.add(new Entry(149f, 3));
-        entries.add(new Entry(150f, 4));
-        entries.add(new Entry(150f, 5));
-        entries.add(new Entry(150f, 6));
+        for(int i=0;i<array.length();i++){
+            entries.add(new Entry(array.getJSONObject(i).getInt("weight"),i));
+        }
 
         LineDataSet dataset = new LineDataSet(entries, "Weight Change for the past 7 days");
 
         ArrayList<String> labels = new ArrayList<String>();
-        labels.add("Mon");
-        labels.add("Tue");
-        labels.add("Wed");
-        labels.add("Thu");
-        labels.add("Fri");
-        labels.add("Sat");
-        labels.add("Sun");
+        for(int i=0;i<array.length();i++){
+            labels.add(array.getJSONObject(i).getString("date"));
+        }
 
         LineData data = new LineData(labels, dataset);
         dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        lineChart.setDescription("Weight Change for the past 7 days(in lbs)");
+        lineChart.setDescription("Weight Change for the past 7 days");
 
         lineChart.setData(data);
         lineChart.animateX(3000);
         lineChart.animateY(3000);
+
     }
 
     @Override

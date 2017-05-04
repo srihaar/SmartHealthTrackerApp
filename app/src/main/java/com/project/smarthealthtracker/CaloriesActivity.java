@@ -1,5 +1,6 @@
 package com.project.smarthealthtracker;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,40 +12,70 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class CaloriesActivity extends AppCompatActivity {
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calories);
         getSupportActionBar().setTitle("Calories Burnt");
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Fetching Weekly Steps");
+        progressDialog.show();
+        progressDialog.setCancelable(false);
 
+
+        NodeRestClient.get("/getCaloriesByWeekMobile",null,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject obj) {
+                try{
+                    JSONArray array = obj.getJSONArray("activities-calories");
+                    loadChart(array);
+                }catch(Exception e){
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e , JSONArray a) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+
+            }
+        });
+
+
+
+    }
+
+    public void loadChart(JSONArray array)throws JSONException{
+        progressDialog.hide();
+        progressDialog.dismiss();
         BarChart barChart = (BarChart) findViewById(R.id.chart);
 
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(2000f, 0));
-        entries.add(new BarEntry(1500f, 1));
-        entries.add(new BarEntry(1390f, 2));
-        entries.add(new BarEntry(1211f, 3));
-        entries.add(new BarEntry(1790f, 4));
-        entries.add(new BarEntry(1000f, 5));
-        entries.add(new BarEntry(1450f, 6));
+        for(int i=0;i<array.length();i++){
+            entries.add(new BarEntry(array.getJSONObject(i).getInt("value"),i));
+        }
 
 
         BarDataSet dataset = new BarDataSet(entries, "Calories");
 
         ArrayList<String> labels = new ArrayList<String>();
-        labels.add("Mon");
-        labels.add("Tue");
-        labels.add("Wed");
-        labels.add("Thu");
-        labels.add("Fri");
-        labels.add("Sat");
-        labels.add("Sun");
+        for(int i=0;i<array.length();i++){
+            labels.add(array.getJSONObject(i).getString("dateTime"));
+        }
+
 
 
         barChart.setDescription("Calories Burnt for the week");
@@ -53,6 +84,8 @@ public class CaloriesActivity extends AppCompatActivity {
         barChart.animateX(2000);
         barChart.animateY(2000);
         dataset.setColors(ColorTemplate.LIBERTY_COLORS);
+        //barChart.getXAxis().setLabelsToSkip(0);
+
     }
 
     @Override

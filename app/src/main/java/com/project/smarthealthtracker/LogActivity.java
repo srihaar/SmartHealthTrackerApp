@@ -73,7 +73,13 @@ public class LogActivity extends AppCompatActivity{
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject obj) {
                 try{
-                    getCalories(obj.getJSONObject("list").getJSONArray("item").getJSONObject(0).getString("ndbno"));
+                    if (obj.has("errors")) {
+                        progressDialog.hide();
+                        alertDialog.setMessage("No Food found");
+                        alertDialog.show();
+                    }else{
+                        getCalories(obj.getJSONObject("list").getJSONArray("item").getJSONObject(0).getString("ndbno"));
+                    }
 
                 }catch(Exception e){
 

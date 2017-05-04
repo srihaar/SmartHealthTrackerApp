@@ -1,48 +1,89 @@
 package com.project.smarthealthtracker;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.*;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class DashboardActivity extends AppCompatActivity {
+    PieChart pieChart1,pieChart2,pieChart3,pieChart4,pieChart5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         getSupportActionBar().setTitle("Dashboard Daily Activity");
+        pieChart1 = (PieChart) findViewById(R.id.chart1);
+        pieChart2 = (PieChart) findViewById(R.id.chart2);
+        pieChart3 = (PieChart) findViewById(R.id.chart3);
+        pieChart4 = (PieChart) findViewById(R.id.chart4);
+        pieChart5 = (PieChart) findViewById(R.id.chart5);
+        loadCharts();
+    }
 
-
-        PieChart pieChart1 = (PieChart) findViewById(R.id.chart1);
-        PieChart pieChart2 = (PieChart) findViewById(R.id.chart2);
-        PieChart pieChart3 = (PieChart) findViewById(R.id.chart3);
-        PieChart pieChart4 = (PieChart) findViewById(R.id.chart4);
-        PieChart pieChart5 = (PieChart) findViewById(R.id.chart5);
+    public void loadCharts(){
 
         ArrayList<Entry> entries1 = new ArrayList<>();
-        entries1.add(new Entry(2450f, 0));
-        entries1.add(new Entry(4550f, 1));
+        //entries1.add(new Entry(obj.getJSONObject("summary").getInt("steps"), 0));
+        System.out.println("steps" + getIntent().getExtras().getInt("steps"));
 
+        int steps = getIntent().getExtras().getInt("steps");
+        int stepsGoal = getIntent().getExtras().getInt("stepsGoal");
+        if(steps < stepsGoal){
+            stepsGoal = stepsGoal - steps;
+        }else{
+            stepsGoal = 0;
+        }
+        entries1.add(new Entry(steps,0));
+        entries1.add(new Entry(stepsGoal, 1));
+
+        Double distance = getIntent().getExtras().getDouble("distance");
+        Double distanceGoal = getIntent().getExtras().getDouble("distanceGoal");
+        if(distance < distanceGoal){
+            distanceGoal = distanceGoal - distance;
+        }else{
+            distanceGoal = 0.0;
+        }
         ArrayList<Entry> entries2 = new ArrayList<>();
-        entries2.add(new Entry(1.6f, 0));
-        entries2.add(new Entry(2.4f, 1));
+        entries2.add(new Entry(distance.floatValue(), 0));
+        entries2.add(new Entry(distanceGoal.floatValue(), 1));
 
+        int calories = getIntent().getExtras().getInt("calories");
+        int caloriesGoal = getIntent().getExtras().getInt("caloriesGoal");
+        if(calories < caloriesGoal){
+            caloriesGoal = caloriesGoal - calories;
+        }else{
+            caloriesGoal = 0;
+        }
         ArrayList<Entry> entries3 = new ArrayList<>();
-        entries3.add(new Entry(490f, 0));
-        entries3.add(new Entry(610f, 1));
+        entries3.add(new Entry(calories, 0));
+        entries3.add(new Entry(caloriesGoal, 1));
 
+        int activeMinutes = getIntent().getExtras().getInt("activeMinutes");
+        int activeMinutesGoal = getIntent().getExtras().getInt("activeMinutesGoal");
+        if(activeMinutes < activeMinutesGoal){
+            activeMinutesGoal = activeMinutesGoal - activeMinutes;
+        }else{
+            activeMinutesGoal = 0;
+        }
         ArrayList<Entry> entries4 = new ArrayList<>();
-        entries4.add(new Entry(5f, 0));
-        entries4.add(new Entry(10f, 1));
+        entries4.add(new Entry(activeMinutes, 0));
+        entries4.add(new Entry(activeMinutesGoal, 1));
 
         ArrayList<Entry> entries5 = new ArrayList<>();
         entries5.add(new Entry(1500f, 0));
