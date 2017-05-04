@@ -33,6 +33,7 @@ public class WeightActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Fetching Weight Data");
         progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
         NodeRestClient.get("/getWeightByWeekMobile",null,new JsonHttpResponseHandler(){
@@ -65,10 +66,13 @@ public class WeightActivity extends AppCompatActivity {
 
         ArrayList<Entry> entries = new ArrayList<>();
         for(int i=0;i<array.length();i++){
-            entries.add(new Entry(array.getJSONObject(i).getInt("weight"),i));
+            Double d = array.getJSONObject(i).getDouble("weight");
+            d = (d*2.20462);
+            int value = d.intValue();
+            entries.add(new Entry(value,i));
         }
 
-        LineDataSet dataset = new LineDataSet(entries, "Weight Change for the past 7 days");
+        LineDataSet dataset = new LineDataSet(entries, "Weight Change for the past 7 days(in lbs)");
 
         ArrayList<String> labels = new ArrayList<String>();
         for(int i=0;i<array.length();i++){

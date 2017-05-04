@@ -31,6 +31,8 @@ public class StepsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_steps);
         getSupportActionBar().setTitle("Steps");
         progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setMessage("Fetching Weekly Steps");
         progressDialog.show();
 

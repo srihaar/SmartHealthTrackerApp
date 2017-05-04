@@ -1,6 +1,7 @@
 package com.project.smarthealthtracker;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,26 +25,31 @@ public class ContactsActivity extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         getSupportActionBar().setTitle("Emergency Contacts");
-        ListView contactsView = (ListView)findViewById(R.id.contactsListView);
-        JSONArray array = new JSONArray();
-        JSONObject obj = new JSONObject();
-        JSONObject obj1 = new JSONObject();
-        list = new ArrayList<JSONObject>();
-        try{
-            obj.put("name","sri");
-            obj.put("number","6695");
-            obj1.put("name","ad");
-            obj1.put("number","45");
-            array.put(obj);
-            array.put(obj1);
-            list.add(obj);
-            list.add(obj1);
-        }catch(Exception e){
 
-        }
-        ContactsAdapter adapter = new ContactsAdapter(ContactsActivity.this,list);
-        contactsView.setAdapter(adapter);
-        contactsView.setOnItemClickListener(this);
+        NodeRestClient.get("/getEmergencyContactsMobile",null,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray array) {
+                try{
+                    list = new ArrayList<JSONObject>();
+                    for(int i=0;i<array.length();i++){
+                        list.add(array.getJSONObject(i));
+                    }
+                    ContactsAdapter adapter = new ContactsAdapter(ContactsActivity.this,list);
+                    ListView contactsView = (ListView)findViewById(R.id.contactsListView);
+                    contactsView.setAdapter(adapter);
+                    contactsView.setOnItemClickListener(ContactsActivity.this);
+                }catch(Exception e){
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e , JSONArray a) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+
+            }
+        });
+
     }
 
     @Override
@@ -104,6 +112,7 @@ public class ContactsActivity extends AppCompatActivity implements AdapterView.O
                 Intent addActivity = new Intent(getApplicationContext(),AddContactActivity.class);
                 addActivity.putExtra("add","true");
                 startActivity(addActivity);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -116,11 +125,14 @@ public class ContactsActivity extends AppCompatActivity implements AdapterView.O
         Intent intent =new Intent(getApplicationContext(),AddContactActivity.class);
         try{
             intent.putExtra("name",obj.getString("name"));
-            intent.putExtra("number",obj.getString("number"));
+            intent.putExtra("phoneNumber",obj.getString("phonenumber"));
+            intent.putExtra("relation",obj.getString("relation"));
+            intent.putExtra("emergencyId",obj.getString("emergency_Id"));
             intent.putExtra("add","false");
         }catch (Exception e){
 
         }
+        finish();
         startActivity(intent);
     }
 }

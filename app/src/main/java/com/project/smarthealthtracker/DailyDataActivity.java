@@ -19,6 +19,8 @@ public class DailyDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_daily_data);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Fetching Data");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
 

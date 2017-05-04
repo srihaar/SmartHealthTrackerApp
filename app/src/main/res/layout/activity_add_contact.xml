@@ -36,7 +36,7 @@
 
         <EditText
             android:hint="Phone Number"
-            android:id="@+id/contactNumber"
+            android:id="@+id/phoneNumber"
             android:layout_width="match_parent"
             android:layout_marginBottom="20dp"
             android:inputType="phone"
@@ -49,7 +49,7 @@
 
         <Button
             android:id="@+id/saveContact"
-            android:text="Submit"
+            android:text="Save"
             android:layout_marginBottom="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -48,7 +48,7 @@ public class ContactsAdapter extends ArrayAdapter {
         JSONObject result = results.get(position);
         try{
             holder.myTitle.setText(result.getString("name"));
-            holder.myPhone.setText(result.getString("phone"));
+            holder.myPhone.setText(result.getString("phonenumber"));
         }catch (Exception e){
 
         }
