@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.project.smarthealthtracker.LoginActivity.MY_PREFS_NAME;
 
 public class ProfileActivity extends AppCompatActivity {
     Button save;
@@ -65,8 +68,13 @@ public class ProfileActivity extends AppCompatActivity {
     public void getProfile(){
         progressDialog.setMessage("Getting Profile");
         progressDialog.show();
+        RequestParams params = new RequestParams();
 
-        NodeRestClient.get("/getProfileMobile",null,new JsonHttpResponseHandler(){
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        System.out.println("user id is"+prefs.getInt("userID", 0));
+        params.put("userID",prefs.getInt("userID", 0));
+
+        NodeRestClient.get("/getProfileMobile",params,new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject obj) {
                 try{
@@ -100,6 +108,8 @@ public class ProfileActivity extends AppCompatActivity {
         params.put("phoneNumber",phoneNumber.getText().toString());
         params.put("height",height.getText().toString());
         params.put("gender",gender.getText().toString());
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        params.put("userID",prefs.getInt("userID", 0));
 
         NodeRestClient.get("/updateProfileMobile",params,new JsonHttpResponseHandler(){
             @Override
@@ -133,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.dashboard_page:
-                Intent profileActivity = new Intent(getApplicationContext(),DashboardActivity.class);
+                Intent profileActivity = new Intent(getApplicationContext(),DailyDataActivity.class);
                 startActivity(profileActivity);
                 finish();
                 return true;
@@ -159,11 +169,11 @@ public class ProfileActivity extends AppCompatActivity {
                 return true;
             case R.id.profile_page:
                 return true;
-            case R.id.goals_page:
-                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
-                startActivity(goalsActivity);
-                finish();
-                return true;
+//            case R.id.goals_page:
+//                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
+//                startActivity(goalsActivity);
+//                finish();
+//                return true;
             case R.id.weight_page:
                 Intent weightActivity = new Intent(getApplicationContext(),WeightActivity.class);
                 startActivity(weightActivity);

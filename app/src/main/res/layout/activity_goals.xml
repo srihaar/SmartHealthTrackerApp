@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_marginBottom="20dp"
             android:inputType="number"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <EditText
             android:hint="Daily Distance Goal(in miles)"
@@ -45,8 +45,8 @@
             android:layout_height="wrap_content" />
 
         <EditText
-            android:hint="Daily Active Minutes Goal"
-            android:id="@+id/minutes"
+            android:hint="Daily Floors Goal"
+            android:id="@+id/floors"
             android:layout_width="match_parent"
             android:layout_marginBottom="20dp"
             android:inputType="number"
@@ -58,7 +58,6 @@
             android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
 
     </LinearLayout>
 

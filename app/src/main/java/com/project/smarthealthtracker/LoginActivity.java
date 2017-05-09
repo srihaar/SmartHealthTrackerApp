@@ -2,6 +2,7 @@ package com.project.smarthealthtracker;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView register,email,password;
     Button loginAction;
     ProgressDialog progressDialog;
+    // MY_PREFS_NAME - a static String variable like:
+   public static final String MY_PREFS_NAME = "MyPrefsFile";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,38 +47,43 @@ public class LoginActivity extends AppCompatActivity {
         loginAction.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-//                RequestParams params = new RequestParams();
-//                params.put("email",email.getText().toString());
-//                params.put("password",password.getText().toString());
-//                progressDialog.show();
-//                NodeRestClient.get("/loginMobile",params,new JsonHttpResponseHandler(){
-//                    @Override
-//                    public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject obj) {
-//                        progressDialog.hide();
-//                        try{
-//                            if(obj.getInt("statusCode")== 200){
-//                                Intent i = new Intent(getApplicationContext(),DashboardActivity.class);
-//                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                startActivity(i);
-//                            }else{
-//                                Toast.makeText(LoginActivity.this,"Incorrect Credentials",Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                        }catch(Exception e){
-//
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e , JSONArray a) {
-//                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-//
-//                    }
-//                });
-                //code for now
-                Intent i = new Intent(getApplicationContext(),DailyDataActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
+                RequestParams params = new RequestParams();
+                params.put("email",email.getText().toString());
+                params.put("password",password.getText().toString());
+                progressDialog.show();
+                NodeRestClient.get("/loginMobile",params,new JsonHttpResponseHandler(){
+                    @Override
+                    public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject obj) {
+                        progressDialog.hide();
+                        try{
+                            if(obj.getInt("statusCode")== 200){
+                                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                editor.putString("accessToken", obj.getString("accessToken"));
+                                System.out.println("user id is"+obj.getInt("userID"));
+                                editor.putInt("userID", obj.getInt("userID"));
+                                editor.commit();
+                                Intent i = new Intent(getApplicationContext(),DailyDataActivity.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(i);
+                            }else{
+                                Toast.makeText(LoginActivity.this,"Incorrect Credentials",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }catch(Exception e){
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, Throwable e , JSONArray a) {
+                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+
+                    }
+                });
+//                //code for now
+//                Intent i = new Intent(getApplicationContext(),DailyDataActivity.class);
+//                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(i);
 
             }
         });

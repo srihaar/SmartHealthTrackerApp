@@ -8,7 +8,7 @@ package com.project.smarthealthtracker;
 import com.loopj.android.http.*;
 
 public class NodeRestClient {
-    private static final String BASE_URL = "http://10.0.2.2:3000";
+    private static final String BASE_URL = "http://192.168.43.232:3000";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

@@ -2,6 +2,7 @@ package com.project.smarthealthtracker;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,12 +15,15 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.project.smarthealthtracker.LoginActivity.MY_PREFS_NAME;
 
 public class WeightActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
@@ -36,7 +40,12 @@ public class WeightActivity extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
-        NodeRestClient.get("/getWeightByWeekMobile",null,new JsonHttpResponseHandler(){
+        RequestParams params = new RequestParams();
+
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        params.put("accessToken",prefs.getString("accessToken", null));
+
+        NodeRestClient.get("/getWeightByWeekMobile",params,new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject obj) {
                 try{
@@ -100,7 +109,7 @@ public class WeightActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.dashboard_page:
-                Intent weightActivity = new Intent(getApplicationContext(),DashboardActivity.class);
+                Intent weightActivity = new Intent(getApplicationContext(),DailyDataActivity.class);
                 startActivity(weightActivity);
                 finish();
                 return true;
@@ -129,11 +138,11 @@ public class WeightActivity extends AppCompatActivity {
                 startActivity(profileActivity);
                 finish();
                 return true;
-            case R.id.goals_page:
-                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
-                startActivity(goalsActivity);
-                finish();
-                return true;
+//            case R.id.goals_page:
+//                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
+//                startActivity(goalsActivity);
+//                finish();
+//                return true;
             case R.id.weight_page:
                 return true;
             case R.id.logoutMenu:

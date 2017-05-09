@@ -74,25 +74,33 @@ public class DashboardActivity extends AppCompatActivity {
         entries3.add(new Entry(calories, 0));
         entries3.add(new Entry(caloriesGoal, 1));
 
-        int activeMinutes = getIntent().getExtras().getInt("activeMinutes");
-        int activeMinutesGoal = getIntent().getExtras().getInt("activeMinutesGoal");
-        if(activeMinutes < activeMinutesGoal){
-            activeMinutesGoal = activeMinutesGoal - activeMinutes;
+        int floors = getIntent().getExtras().getInt("floors");
+        int floorsGoal = getIntent().getExtras().getInt("floorsGoal");
+        if(floors < floorsGoal){
+            floorsGoal = floorsGoal - floors;
         }else{
-            activeMinutesGoal = 0;
+            floorsGoal = 0;
+        }
+
+        int caloriesIn = getIntent().getExtras().getInt("caloriesIn");
+        int caloriesInGoal = 2000;
+        if(caloriesIn < caloriesInGoal){
+            caloriesInGoal = caloriesInGoal - caloriesIn;
+        }else{
+            caloriesInGoal = 0;
         }
         ArrayList<Entry> entries4 = new ArrayList<>();
-        entries4.add(new Entry(activeMinutes, 0));
-        entries4.add(new Entry(activeMinutesGoal, 1));
+        entries4.add(new Entry(floors, 0));
+        entries4.add(new Entry(floorsGoal, 1));
 
         ArrayList<Entry> entries5 = new ArrayList<>();
-        entries5.add(new Entry(1500f, 0));
-        entries5.add(new Entry(50f, 1));
+        entries5.add(new Entry(caloriesIn, 0));
+        entries5.add(new Entry(caloriesInGoal, 1));
 
         PieDataSet dataset1 = new PieDataSet(entries1, "Steps");
         PieDataSet dataset2 = new PieDataSet(entries2, "Distance");
         PieDataSet dataset3 = new PieDataSet(entries3, "Calories Burnt");
-        PieDataSet dataset4 = new PieDataSet(entries4, "Active Minutes");
+        PieDataSet dataset4 = new PieDataSet(entries4, "Floors");
         PieDataSet dataset5 = new PieDataSet(entries5, "Calories Consumed");
 
         ArrayList<String> labels1 = new ArrayList<String>();
@@ -109,8 +117,8 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         ArrayList<String> labels4 = new ArrayList<String>();
-        labels4.add("Active Minutes Completed");
-        labels4.add("Active Minutes Remaining");
+        labels4.add("Floors Completed");
+        labels4.add("Floors Remaining");
 
         ArrayList<String> labels5 = new ArrayList<String>();
         labels5.add("Calories Consumed");
@@ -139,7 +147,7 @@ public class DashboardActivity extends AppCompatActivity {
         pieChart1.setDescription("Steps Today as per your goal");
         pieChart2.setDescription("Distance Today in miles as per your goal");
         pieChart3.setDescription("Calories Burnt Today as per your goal");
-        pieChart4.setDescription("Active Minutes Today as per your goal");
+        pieChart4.setDescription("Floors Today as per your goal");
         pieChart5.setDescription("Calories Consumed Today as per your goal");
 
         pieChart1.setData(data1);
@@ -181,10 +189,10 @@ public class DashboardActivity extends AppCompatActivity {
                 Intent profileActivity = new Intent(getApplicationContext(),ProfileActivity.class);
                 startActivity(profileActivity);
                 return true;
-            case R.id.goals_page:
-                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
-                startActivity(goalsActivity);
-                return true;
+//            case R.id.goals_page:
+//                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
+//                startActivity(goalsActivity);
+//                return true;
             case R.id.weight_page:
                 Intent weightActivity = new Intent(getApplicationContext(),WeightActivity.class);
                 startActivity(weightActivity);

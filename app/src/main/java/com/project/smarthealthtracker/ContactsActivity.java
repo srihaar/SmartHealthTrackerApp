@@ -1,6 +1,7 @@
 package com.project.smarthealthtracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,11 +13,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.project.smarthealthtracker.LoginActivity.MY_PREFS_NAME;
 
 public class ContactsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     ArrayList<JSONObject> list;
@@ -26,7 +30,12 @@ public class ContactsActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_contacts);
         getSupportActionBar().setTitle("Emergency Contacts");
 
-        NodeRestClient.get("/getEmergencyContactsMobile",null,new JsonHttpResponseHandler(){
+        RequestParams params = new RequestParams();
+
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        params.put("userID",prefs.getInt("userID",0));
+
+        NodeRestClient.get("/getEmergencyContactsMobile",params,new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONArray array) {
                 try{
@@ -63,9 +72,9 @@ public class ContactsActivity extends AppCompatActivity implements AdapterView.O
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.dashboard_page:
-                Intent dashboard = new Intent(getApplicationContext(),DashboardActivity.class);
-                dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent dashboard = new Intent(getApplicationContext(),DailyDataActivity.class);
                 startActivity(dashboard);
+                finish();
                 return true;
             case R.id.calories_page:
                 Intent i = new Intent(getApplicationContext(),CaloriesActivity.class);
@@ -92,11 +101,11 @@ public class ContactsActivity extends AppCompatActivity implements AdapterView.O
                 startActivity(profileActivity);
                 finish();
                 return true;
-            case R.id.goals_page:
-                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
-                startActivity(goalsActivity);
-                finish();
-                return true;
+//            case R.id.goals_page:
+//                Intent goalsActivity = new Intent(getApplicationContext(),GoalsActivity.class);
+//                startActivity(goalsActivity);
+//                finish();
+//                return true;
             case R.id.weight_page:
                 Intent weightActivity = new Intent(getApplicationContext(),WeightActivity.class);
                 startActivity(weightActivity);

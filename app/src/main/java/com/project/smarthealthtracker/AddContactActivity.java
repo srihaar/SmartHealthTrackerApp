@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,6 +17,8 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import static com.project.smarthealthtracker.LoginActivity.MY_PREFS_NAME;
 
 public class AddContactActivity extends AppCompatActivity {
     EditText name,phoneNumber,relation;
@@ -85,6 +88,9 @@ public class AddContactActivity extends AppCompatActivity {
         params.put("name",name.getText().toString());
         params.put("phoneNumber",phoneNumber.getText().toString());
         params.put("relation",relation.getText().toString());
+
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        params.put("userID",prefs.getInt("userID", 0));
         NodeRestClient.get("/addContactMobile",params,new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, JSONObject obj) {
