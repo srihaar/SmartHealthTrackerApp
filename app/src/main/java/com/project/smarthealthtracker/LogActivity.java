@@ -50,7 +50,6 @@ public class LogActivity extends AppCompatActivity{
         client = new AsyncHttpClient();
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Getting Calories");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setCancelable(false);
 
@@ -66,7 +65,9 @@ public class LogActivity extends AppCompatActivity{
             @Override
             public void onClick(View v){
                 if(foodName.getText().length()>0){
+                    progressDialog.setMessage("Getting Calories");
                     progressDialog.show();
+                    status = "check calories";
                     getNdbno();
                 }else{
                     Toast.makeText(LogActivity.this,"Enter Food Name to check calories",Toast.LENGTH_SHORT).show();
